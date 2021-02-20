@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'security' %}
+
+{% block title %}{{ 'security.reset_password.send_mail.title'|trans }}{% endblock %}
+
+{% block main %}
+    <p>{{ 'security.reset_password.send_mail.info'|trans({'%expire%': tokenLifetime|date('g') }) }}</p>
+    <p>{{ 'security.reset_password.send_mail.try_again'|trans({'%url%': path('app_forgot_password_request') })|raw }}</p>
+{% endblock %}

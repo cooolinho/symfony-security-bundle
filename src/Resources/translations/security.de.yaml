@@ -1,0 +1,31 @@
+security.user:
+    email: E-Mail
+security.change_password:
+    message:
+        not_blank: Bitte gebe ein Passwort an
+        min_length: 'Dein Passwort muss mindestens {{ limit }} Zeichen haben'
+    password:
+        new: Neues Passwort
+        repeat: Passwort wiedeholen
+        not_match: Passwort stimmen nicht überein
+security.reset_password:
+    title: Setze dein Passwort zurück
+    submit: Passwort zurücksetzen
+    message:
+        not_blank: Bitte gebe eine E-Mail an
+    send_mail:
+        title: Passwort Anfrage versendet
+        info: 'Eine E-Mail wurde versendet. In der findest du eine Link der nach %expire% Stunde ablaufen wird'
+        try_again: 'Falls du keine E-Mail erhalten hast, prüfe einmal deinen Spam Ordner oder <a href="%url%">versuche es nochmal</a>'
+    email:
+        info: 'Um dein Passwort zurückzusetzen, klicke bitte auf diesen <a href="%url%">Link</a>. Der Link ist nach %expire% Stunde abgelaufen.'
+security.request_password:
+    title: Setze dein Passwort zurück
+    info: Gebe deine E-Mail Adresse an und wir senden dir eine Link damit du dein Passwort zurücksetzen kannst
+security.registration:
+    message:
+        terms: Du musst die Bedingungen aktzeptieren
+    password:
+        not_blank: Bitte gebe ein Passwort ein
+#        min_length: 'Dein Passwort muss mindestens %limit% Zeichen haben'
+        min_length: 'Dein Passwort muss mindestens {{ limit }} Zeichen haben'

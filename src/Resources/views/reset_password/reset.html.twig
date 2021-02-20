@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'security' %}
+
+{% block title %}{{ 'security.reset_password.title'|trans }}{% endblock %}
+
+{% block main %}
+    <h1>{{ 'security.reset_password.title'|trans }}</h1>
+
+    {{ form_start(resetForm) }}
+        {{ form_row(resetForm.plainPassword) }}
+        <button class="btn btn-primary">{{ 'security.reset_password.submit'|trans }}</button>
+    {{ form_end(resetForm) }}
+{% endblock %}

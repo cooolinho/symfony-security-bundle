@@ -1,0 +1,10 @@
+{% trans_default_domain 'security' %}
+
+<h1>Hi!</h1>
+
+<p>
+    {{ 'security.reset_password.email.info'|trans({
+        '%url%': url('app_reset_password', {token: resetToken.token}),
+        '%expire%': tokenLifetime|date('g')
+    })|raw }}
+</p>
