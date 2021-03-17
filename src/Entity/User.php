@@ -2,6 +2,9 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Entity;
 
+use Cooolinho\Bundle\SecurityBundle\Entity\Traits\CredentialsTrait;
+use Cooolinho\Bundle\SecurityBundle\Entity\Traits\EmailTrait;
+use Cooolinho\Bundle\SecurityBundle\Entity\Traits\RoleTrait;
 use Cooolinho\Bundle\SecurityBundle\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,7 +16,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    use RoleTrait, EmailTrait, CredentialsTrait;
+
     public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * @ORM\Id()
@@ -25,47 +31,34 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private ?string $email;
+    protected string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    public array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password;
+    protected string $password;
 
-    /**
-     * User constructor.
-     */
     public function __construct()
     {
         $this->addRole(self::ROLE_USER);
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     * @return $this
-     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -73,28 +66,16 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
-    /**
-     * @param string $role
-     * @return $this
-     */
     public function addRole(string $role): self
     {
         if (!in_array($role, $this->roles, true)){
@@ -104,10 +85,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @param array $roles
-     * @return $this
-     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -115,18 +92,11 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getPassword(): string
     {
         return (string) $this->password;
     }
 
-    /**
-     * @param string $password
-     * @return $this
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -134,17 +104,11 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here

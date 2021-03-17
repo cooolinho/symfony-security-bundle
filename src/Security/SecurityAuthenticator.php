@@ -87,9 +87,6 @@ class SecurityAuthenticator extends AbstractFormLoginAuthenticator implements Pa
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
     public function getPassword($credentials): ?string
     {
         return $credentials['password'];
