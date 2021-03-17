@@ -1,16 +1,12 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\DataFixtures;
+namespace Cooolinho\Bundle\SecurityBundle\DataFixtures;
 
-use Cooolinho\SecurityBundle\Entity\User;
+use Cooolinho\Bundle\SecurityBundle\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-/**
- * Class UserFixtures
- * @package Cooolinho\SecurityBundle\DataFixtures
- */
 class UserFixtures extends Fixture
 {
     private UserPasswordEncoderInterface $passwordEncoder;

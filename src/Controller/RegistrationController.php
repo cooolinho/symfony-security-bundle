@@ -1,10 +1,10 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Controller;
+namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
-use Cooolinho\SecurityBundle\Entity\User;
-use Cooolinho\SecurityBundle\Form\RegistrationFormType;
-use Cooolinho\SecurityBundle\Security\SecurityAuthenticator;
+use Cooolinho\Bundle\SecurityBundle\Entity\User;
+use Cooolinho\Bundle\SecurityBundle\Form\RegistrationFormType;
+use Cooolinho\Bundle\SecurityBundle\Security\SecurityAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

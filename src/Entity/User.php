@@ -1,8 +1,8 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Entity;
+namespace Cooolinho\Bundle\SecurityBundle\Entity;
 
-use Cooolinho\SecurityBundle\Repository\UserRepository;
+use Cooolinho\Bundle\SecurityBundle\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -137,7 +137,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
@@ -145,7 +145,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

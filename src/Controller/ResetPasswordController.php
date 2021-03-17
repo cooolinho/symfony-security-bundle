@@ -1,10 +1,10 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Controller;
+namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
-use Cooolinho\SecurityBundle\Entity\User;
-use Cooolinho\SecurityBundle\Form\ChangePasswordFormType;
-use Cooolinho\SecurityBundle\Form\ResetPasswordRequestFormType;
+use Cooolinho\Bundle\SecurityBundle\Entity\User;
+use Cooolinho\Bundle\SecurityBundle\Form\ChangePasswordFormType;
+use Cooolinho\Bundle\SecurityBundle\Form\ResetPasswordRequestFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;

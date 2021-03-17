@@ -1,10 +1,9 @@
 <?php
 
-namespace Cooolinho\SecurityBundle;
+namespace Cooolinho\Bundle\SecurityBundle;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Cooolinho\Bundle\SecurityBundle\DependencyInjection\CooolinhoSecurityExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Cooolinho\SecurityBundle\DependencyInjection\CooolinhoSecurityExtension;
 
 class CooolinhoSecurityBundle extends Bundle
 {

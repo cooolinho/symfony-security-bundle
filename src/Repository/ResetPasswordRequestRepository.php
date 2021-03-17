@@ -1,8 +1,8 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Repository;
+namespace Cooolinho\Bundle\SecurityBundle\Repository;
 
-use Cooolinho\SecurityBundle\Entity\ResetPasswordRequest;
+use Cooolinho\Bundle\SecurityBundle\Entity\ResetPasswordRequest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;

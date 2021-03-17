@@ -1,6 +1,6 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Tests;
+namespace Cooolinho\Bundle\SecurityBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

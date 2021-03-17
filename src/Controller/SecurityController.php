@@ -1,6 +1,6 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Controller;
+namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

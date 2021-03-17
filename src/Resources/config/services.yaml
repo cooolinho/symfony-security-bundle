@@ -3,10 +3,10 @@ services:
         autowire: true
         autoconfigure: true
 
-    Cooolinho\SecurityBundle\:
+    Cooolinho\Bundle\SecurityBundle\:
         resource: '../../../src/*'
         exclude: '../../../src/{DependencyInjection,Resources,Tests}'
 
-    Cooolinho\SecurityBundle\Controller\:
+    Cooolinho\Bundle\SecurityBundle\Controller\:
         resource: '../../../src/Controller'
         tags: ['controller.service_arguments']

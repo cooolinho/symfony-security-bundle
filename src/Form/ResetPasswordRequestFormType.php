@@ -1,8 +1,8 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Form;
+namespace Cooolinho\Bundle\SecurityBundle\Form;
 
-use Cooolinho\SecurityBundle\CooolinhoSecurityBundle;
+use Cooolinho\Bundle\SecurityBundle\CooolinhoSecurityBundle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;

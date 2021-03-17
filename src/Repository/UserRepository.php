@@ -1,8 +1,8 @@
 <?php
 
-namespace Cooolinho\SecurityBundle\Repository;
+namespace Cooolinho\Bundle\SecurityBundle\Repository;
 
-use Cooolinho\SecurityBundle\Entity\User;
+use Cooolinho\Bundle\SecurityBundle\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
