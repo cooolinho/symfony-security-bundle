@@ -10,6 +10,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserFixtures extends Fixture
 {
     public const DEMO_PASSWORD = 'secret';
+    public const DEMO_HOST_EMAIL = '@example.com';
+    public const DEMO_USERS = [
+        'super-admin' => User::ROLE_SUPER_ADMIN,
+        'admin' => User::ROLE_ADMIN,
+        'user' => User::ROLE_USER,
+    ];
+
     private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
@@ -19,11 +26,13 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->setEmail('admin@example.com');
-        $user->setPassword($this->passwordEncoder->encodePassword($user, static::DEMO_PASSWORD));
+        foreach (self::DEMO_USERS as $username => $role) {
+            $user = new User();
+            $user->setEmail($username . self::DEMO_HOST_EMAIL);
+            $user->setPassword($this->passwordEncoder->encodePassword($user, self::DEMO_PASSWORD));
 
-        $manager->persist($user);
+            $manager->persist($user);
+        }
 
         $manager->flush();
     }
