@@ -30,6 +30,7 @@ class UserFixtures extends Fixture
             $user = new User();
             $user->setEmail($username . self::DEMO_HOST_EMAIL);
             $user->setPassword($this->passwordEncoder->encodePassword($user, self::DEMO_PASSWORD));
+            $user->addRole($role);
 
             $manager->persist($user);
         }
