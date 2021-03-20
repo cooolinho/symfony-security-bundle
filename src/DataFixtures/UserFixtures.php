@@ -17,19 +17,12 @@ class UserFixtures extends Fixture
         'user' => User::ROLE_USER,
     ];
 
-    private UserPasswordEncoderInterface $passwordEncoder;
-
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
-    }
-
     public function load(ObjectManager $manager): void
     {
         foreach (self::DEMO_USERS as $username => $role) {
             $user = new User();
             $user->setEmail($username . self::DEMO_HOST_EMAIL);
-            $user->setPassword($this->passwordEncoder->encodePassword($user, self::DEMO_PASSWORD));
+            $user->setPlainPassword(self::DEMO_PASSWORD);
             $user->addRole($role);
 
             $manager->persist($user);
