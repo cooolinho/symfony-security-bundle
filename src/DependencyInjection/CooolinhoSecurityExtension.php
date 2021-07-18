@@ -25,6 +25,20 @@ class CooolinhoSecurityExtension extends Extension
             $container,
             $locator
         );
+
         $loader->load('services.yaml');
+
+        $container->setParameter(
+            $this->getAlias() . '.' . Configuration::ROUTE_LOGIN,
+            $config[Configuration::ROUTE_LOGIN]
+        );
+        $container->setParameter(
+            $this->getAlias() . '.' . Configuration::ROUTE_AFTER_LOGIN,
+            $config[Configuration::ROUTE_AFTER_LOGIN]
+        );
+        $container->setParameter(
+            $this->getAlias() . '.' . Configuration::ROUTE_LOGOUT,
+            $config[Configuration::ROUTE_LOGOUT]
+        );
     }
 }
