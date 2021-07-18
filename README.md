@@ -1,13 +1,21 @@
 # symfony-security-bundle
 
 ## Setup
+
 ### Install via composer
+
 ``
 composer install cooolinho/symfony-security-bundle
 ``
-### update security.yml 
+
+### update .env
+
+    MAILER_DSN=smtp://user:pass@smtp.example.com:port
+
+### update security.yml
 
 #### add to encoders
+
     security:
         encoders:
             ...
@@ -51,10 +59,15 @@ composer install cooolinho/symfony-security-bundle
         - { path: ^/logout, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
-### add cooolinho_security.yaml to config/pacakges
+### add cooolinho_security.yaml to config/packages
 
     cooolinho_security:
         route_after_login: # REQUIRED
+
+### update reset_password.yaml in config/packages
+
+    symfonycasts_reset_password:
+        request_password_repository: Cooolinho\Bundle\SecurityBundle\Repository\ResetPasswordRequestRepository
 
 ### update routes.yaml
 

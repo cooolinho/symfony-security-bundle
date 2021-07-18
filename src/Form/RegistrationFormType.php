@@ -4,18 +4,19 @@ namespace Cooolinho\Bundle\SecurityBundle\Form;
 
 use Cooolinho\Bundle\SecurityBundle\CooolinhoSecurityBundle;
 use Cooolinho\Bundle\SecurityBundle\Entity\User;
+use Cooolinho\Bundle\SecurityBundle\Form\Traits\PlainPasswordTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationFormType extends AbstractType
 {
+    use PlainPasswordTrait;
+
     private TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
@@ -42,25 +43,8 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => $this->translator->trans(
-                            'security.registration.password.not_blank',
-                            [],
-                            CooolinhoSecurityBundle::TRANSLATION_DOMAIN
-                        ),
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => $this->translator->trans(
-                            'security.registration.password.min_length',
-                            [],
-                            CooolinhoSecurityBundle::TRANSLATION_DOMAIN
-                        ),
-                        'max' => 4096,
-                    ]),
-                ],
-                'translation_domain' => 'security'
+                'constraints' => $this->getPasswordConstraints($builder, $this->translator),
+                'translation_domain' => 'security',
             ])
         ;
     }

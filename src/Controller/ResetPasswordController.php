@@ -33,12 +33,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Display & process form to request a password reset.
-     *
-     * @Route("", name="app_forgot_password_request")
-     * @param Request $request
-     * @param MailerInterface $mailer
-     * @return Response
+     * @Route("/", name="app_forgot_password_request")
      */
     public function request(Request $request, MailerInterface $mailer): Response
     {
@@ -58,9 +53,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Confirmation page after a user has requested a password reset.
-     *
-     * @Route("/check-email", name="app_check_email")
+     * @Route("/check-email", name="app_forgot_password_check_mail")
      */
     public function checkEmail(): Response
     {
@@ -75,13 +68,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Validates and process the reset URL that the user clicked in their email.
-     *
-     * @Route("/reset/{token}", name="app_reset_password")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param string|null $token
-     * @return Response
+     * @Route("/reset", name="app_forgot_password_reset")
      */
     public function reset(
         Request $request,
@@ -89,12 +76,12 @@ class ResetPasswordController extends AbstractController
         string $token = null
     ): Response
     {
-        if ($token) {
+        if ($token = $request->get('token')) {
             // We store the token in session and remove it from the URL, to avoid the URL being
             // loaded in a browser and potentially leaking the token to 3rd party JavaScript.
             $this->storeTokenInSession($token);
 
-            return $this->redirectToRoute('app_reset_password');
+            return $this->redirectToRoute('app_forgot_password_reset');
         }
 
         $token = $this->getTokenFromSession();
@@ -133,7 +120,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('@CooolinhoSecurity/reset_password/reset.html.twig', [
@@ -147,12 +134,12 @@ class ResetPasswordController extends AbstractController
             'email' => $emailFormData,
         ]);
 
-        // Marks that you are allowed to see the app_check_email page.
+        // Marks that you are allowed to see the app_forgot_password_check_mail page.
         $this->setCanCheckEmailInSession();
 
         // Do not reveal whether a user account was found or not.
         if (!$user) {
-            return $this->redirectToRoute('app_check_email');
+            return $this->redirectToRoute('app_forgot_password_check_mail');
         }
 
         try {
@@ -163,11 +150,11 @@ class ResetPasswordController extends AbstractController
                  $e->getReason()
              ));
 
-            return $this->redirectToRoute('app_check_email');
+            return $this->redirectToRoute('app_forgot_password_check_mail');
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address('coding@cooolinho.de', 'Cooolinho Mail Bot'))
+            ->from(new Address('test@localhost', 'Localhost Mailbot'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('@CooolinhoSecurity/reset_password/email.html.twig')
@@ -179,6 +166,6 @@ class ResetPasswordController extends AbstractController
 
         $mailer->send($email);
 
-        return $this->redirectToRoute('app_check_email');
+        return $this->redirectToRoute('app_forgot_password_check_mail');
     }
 }
