@@ -8,15 +8,15 @@ use Cooolinho\Bundle\SecurityBundle\Entity\UserInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserListener
 {
-    private UserPasswordEncoderInterface $passwordEncoder;
+    private UserPasswordHasherInterface $passwordEncoder;
     private LoggerInterface $logger;
 
     public function __construct(
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         LoggerInterface $logger
     )
     {
@@ -31,9 +31,7 @@ class UserListener
 
     private function hashUserPassword(UserInterface $user): void
     {
-        $encodedPassword = $this->passwordEncoder->encodePassword($user, $user->getPlainPassword());
-        $user->setPassword($encodedPassword);
-
+        $user->setPassword($this->passwordEncoder->hashPassword($user, $user->getPlainPassword()));
         $this->logger->log(LogLevel::INFO, $user->getEmail() . ' password encrypted!');
     }
 }

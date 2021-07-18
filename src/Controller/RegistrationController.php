@@ -4,13 +4,12 @@ namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
 use Cooolinho\Bundle\SecurityBundle\Entity\User;
 use Cooolinho\Bundle\SecurityBundle\Form\RegistrationFormType;
-use Cooolinho\Bundle\SecurityBundle\Security\SecurityAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistrationController extends AbstractController
 {
@@ -18,15 +17,11 @@ class RegistrationController extends AbstractController
      * @Route("/register", name="app_register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param GuardAuthenticatorHandler $guardHandler
-     * @param SecurityAuthenticator $authenticator
      * @return Response
      */
     public function register(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
-        GuardAuthenticatorHandler $guardHandler,
-        SecurityAuthenticator $authenticator
+        ParameterBagInterface $parameterBag
     ): Response
     {
         $user = new User();
@@ -34,23 +29,13 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            $user->setPlainPassword($form->get('plainPassword')->getData());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main'
-            );
+            return $this->redirectToRoute($parameterBag->get('cooolinho_security.route_login'));
         }
 
         return $this->render('@CooolinhoSecurity/registration/register.html.twig', [
