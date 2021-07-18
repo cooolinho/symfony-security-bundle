@@ -1,7 +1,0 @@
-app_login:
-    path: /login
-    controller: Cooolinho\Bundle\SecurityBundle\Controller\SecurityController::login
-
-app_logout:
-    path: /logout
-    controller: Cooolinho\Bundle\SecurityBundle\Controller\SecurityController::logout

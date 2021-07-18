@@ -1,9 +1,0 @@
-cooolinho_security_authentication:
-    resource: '@CooolinhoSecurityBundle/Resources/config/routes/authentication.yaml'
-
-cooolinho_security_register:
-    resource: '@CooolinhoSecurityBundle/Resources/config/routes/authentication.yaml'
-
-cooolinho_security_reset_password:
-    resource: '@CooolinhoSecurityBundle/Resources/config/routes/reset_password.yaml'
-    prefix: /reset-password

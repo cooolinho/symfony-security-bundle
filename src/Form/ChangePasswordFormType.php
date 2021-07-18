@@ -3,17 +3,18 @@
 namespace Cooolinho\Bundle\SecurityBundle\Form;
 
 use Cooolinho\Bundle\SecurityBundle\CooolinhoSecurityBundle;
+use Cooolinho\Bundle\SecurityBundle\Form\Traits\PlainPasswordTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChangePasswordFormType extends AbstractType
 {
+    use PlainPasswordTrait;
+
     private TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
@@ -27,23 +28,7 @@ class ChangePasswordFormType extends AbstractType
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => $this->translator->trans(
-                                'security.change_password.message.not_blank',
-                                [],
-                                CooolinhoSecurityBundle::TRANSLATION_DOMAIN
-                            ),
-                        ]),
-                        new Length([
-                            'min' => 6,
-                            'minMessage' => $this->translator->trans(
-                                'security.change_password.message.min_length',
-                                [], CooolinhoSecurityBundle::TRANSLATION_DOMAIN
-                            ),
-                            'max' => 4096,
-                        ]),
-                    ],
+                    'constraints' => $this->getPasswordConstraints($builder, $this->translator),
                     'label' => $this->translator->trans(
                         'security.change_password.password.new',
                         [],

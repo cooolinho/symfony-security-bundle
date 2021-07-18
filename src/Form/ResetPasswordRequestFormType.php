@@ -36,7 +36,7 @@ class ResetPasswordRequestFormType extends AbstractType
                             CooolinhoSecurityBundle::TRANSLATION_DOMAIN
                         ),
                     ]),
-                ],
+                ]
             ])
         ;
     }

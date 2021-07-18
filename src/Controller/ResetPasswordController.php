@@ -12,11 +12,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
+/**
+ * @Route("/reset-password")
+ */
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
@@ -28,6 +32,9 @@ class ResetPasswordController extends AbstractController
         $this->resetPasswordHelper = $resetPasswordHelper;
     }
 
+    /**
+     * @Route("/", name="app_forgot_password_request")
+     */
     public function request(Request $request, MailerInterface $mailer): Response
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
@@ -45,6 +52,9 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/check-email", name="app_forgot_password_check_mail")
+     */
     public function checkEmail(): Response
     {
         // We prevent users from directly accessing this page
@@ -57,6 +67,9 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/reset", name="app_forgot_password_reset")
+     */
     public function reset(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
@@ -141,7 +154,7 @@ class ResetPasswordController extends AbstractController
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address('coding@cooolinho.de', 'Cooolinho Mail Bot'))
+            ->from(new Address('test@localhost', 'Localhost Mailbot'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('@CooolinhoSecurity/reset_password/email.html.twig')
