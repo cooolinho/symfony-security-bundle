@@ -38,6 +38,19 @@ composer install cooolinho/symfony-security-bundle
                     path: app_logout
                     target: app_login
 
+#### add role hierarchy
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
+        ROLE_ADMIN: ROLE_USER
+
+#### add access control
+
+    access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
 ### add cooolinho_security.yaml to config/pacakges
 
     cooolinho_security:

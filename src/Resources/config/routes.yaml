@@ -5,3 +5,7 @@ app_login:
 app_logout:
     path: /logout
     controller: Cooolinho\Bundle\SecurityBundle\Controller\SecurityController::logout
+
+app_register:
+    path: /register
+    controller: Cooolinho\Bundle\SecurityBundle\Controller\RegistrationController::register
