@@ -23,7 +23,11 @@ class ResetPasswordRequestFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'security.user.email',
+                'label' => $this->translator->trans(
+                    'security.user.email',
+                    [],
+                    CooolinhoSecurityBundle::TRANSLATION_DOMAIN
+                ),
                 'constraints' => [
                     new NotBlank([
                         'message' => $this->translator->trans(
@@ -32,7 +36,7 @@ class ResetPasswordRequestFormType extends AbstractType
                             CooolinhoSecurityBundle::TRANSLATION_DOMAIN
                         ),
                     ]),
-                ]
+                ],
             ])
         ;
     }

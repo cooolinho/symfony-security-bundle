@@ -1,0 +1,3 @@
+app_register:
+    path: /register
+    controller: Cooolinho\Bundle\SecurityBundle\Controller\RegistrationController::register

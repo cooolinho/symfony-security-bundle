@@ -4,7 +4,7 @@
 
 <p>
     {{ 'security.reset_password.email.info'|trans({
-        '%url%': url('app_reset_password', {token: resetToken.token}),
+        '%url%': url('app_forgot_password_reset', {token: resetToken.token}),
         '%expire%': tokenLifetime|date('g')
     })|raw }}
 </p>

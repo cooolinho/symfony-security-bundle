@@ -1,11 +1,9 @@
-app_login:
-    path: /login
-    controller: Cooolinho\Bundle\SecurityBundle\Controller\SecurityController::login
+cooolinho_security_authentication:
+    resource: '@CooolinhoSecurityBundle/Resources/config/routes/authentication.yaml'
 
-app_logout:
-    path: /logout
-    controller: Cooolinho\Bundle\SecurityBundle\Controller\SecurityController::logout
+cooolinho_security_register:
+    resource: '@CooolinhoSecurityBundle/Resources/config/routes/authentication.yaml'
 
-app_register:
-    path: /register
-    controller: Cooolinho\Bundle\SecurityBundle\Controller\RegistrationController::register
+cooolinho_security_reset_password:
+    resource: '@CooolinhoSecurityBundle/Resources/config/routes/reset_password.yaml'
+    prefix: /reset-password
