@@ -2,6 +2,7 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
+use Cooolinho\Bundle\SecurityBundle\Form\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,9 +18,16 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $form = $this->createForm(LoginFormType::class, null, [
+            'lastUsername' => $lastUsername,
+        ]);
+
         return $this->render(
             '@CooolinhoSecurity/security/login.html.twig',
-            ['last_username' => $lastUsername, 'error' => $error]
+            [
+                'form' => $form->createView(),
+                'error' => $error,
+            ]
         );
     }
 

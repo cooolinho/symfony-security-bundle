@@ -2,6 +2,7 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Security;
 
+use Cooolinho\Bundle\SecurityBundle\Form\LoginFormType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,15 +53,19 @@ class SecurityAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): PassportInterface
     {
-        $email = $request->request->get('email', '');
+        $form = $request->request->get(LoginFormType::FORM_NAME);
+
+        $email = $form['email'] ?? '';
+        $password = $form['password'] ?? '';
+        $token = $form[LoginFormType::TOKEN_FIELD_NAME] ?? '';
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         return new Passport(
             new UserBadge($email),
-            new PasswordCredentials($request->request->get('password', '')),
+            new PasswordCredentials($password),
             [
-                new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
+                new CsrfTokenBadge(LoginFormType::TOKEN_ID, $token),
             ]
         );
     }
@@ -76,6 +81,8 @@ class SecurityAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
+        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception->getMessage());
+
         return new RedirectResponse($this->urlGenerator->generate($this->getLoginRoute()));
     }
 }

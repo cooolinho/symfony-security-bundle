@@ -69,7 +69,8 @@ composer install cooolinho/symfony-security-bundle
     symfonycasts_reset_password:
         request_password_repository: Cooolinho\Bundle\SecurityBundle\Repository\ResetPasswordRequestRepository
 
-### update routes.yaml
+### update config/routes/annotations.yaml
 
     cooolinho_security:
-        resource: '@CooolinhoSecurityBundle/Resources/config/routes.yaml'
+        resource: ../../vendor/cooolinho/symfony-security-bundle/src/Controller/
+        type: annotation
