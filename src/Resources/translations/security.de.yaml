@@ -24,8 +24,7 @@ security.request_password:
     info: Gebe deine E-Mail Adresse an und wir senden dir eine Link damit du dein Passwort zurücksetzen kannst
 security.registration:
     message:
-        terms: Du musst die Bedingungen aktzeptieren
+        terms: Ich aktzeptiere die Bedingungen
     password:
         not_blank: Bitte gebe ein Passwort ein
-#        min_length: 'Dein Passwort muss mindestens %limit% Zeichen haben'
         min_length: 'Dein Passwort muss mindestens {{ limit }} Zeichen haben'

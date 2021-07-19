@@ -7,6 +7,7 @@ use Cooolinho\Bundle\SecurityBundle\Form\Traits\PlainPasswordTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -47,8 +48,9 @@ class ChangePasswordFormType extends AbstractType
                     [],
                     CooolinhoSecurityBundle::TRANSLATION_DOMAIN
                 ),
-                'mapped' => false
-            ]);
+                'mapped' => false,
+            ])
+            ->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

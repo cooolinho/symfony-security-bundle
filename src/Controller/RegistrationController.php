@@ -34,8 +34,8 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute($parameterBag->get('cooolinho_security.route_login'));
         }
 
-        return $this->render('@CooolinhoSecurity/registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+        return $this->render('@CooolinhoSecurity/register/index.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

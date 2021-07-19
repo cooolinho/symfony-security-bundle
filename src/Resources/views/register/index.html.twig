@@ -1,0 +1,35 @@
+{% extends '@CooolinhoUi/pages/login.html.twig' %}
+{% trans_default_domain 'security' %}
+
+{% block title %}Register{% endblock %}
+{% block login_title %}Register{% endblock %}
+
+{% block login_body_top %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+{% endblock %}
+
+{% block login_form_email %}
+    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'E-Mail'}}) }}
+{% endblock %}
+
+{% block login_form_password %}
+    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
+{% endblock %}
+
+{% block login_form_password_after %}
+    <div class="input-group form-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-key"></i></span>
+        </div>
+
+        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'Repeat Password'}}) }}
+    </div>
+{% endblock %}
+
+{% block login_form_remember_me %}
+    {{ form_widget(form.agreeTerms) }}{{ 'security.registration.message.terms'|trans }}
+{% endblock %}
+
+{% block login_footer %}{% endblock %}
