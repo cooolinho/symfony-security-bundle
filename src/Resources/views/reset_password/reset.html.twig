@@ -1,13 +1,9 @@
-{% extends '@CooolinhoUi/base.html.twig' %}
+{% extends '@CooolinhoSecurity/register/index.html.twig' %}
 {% trans_default_domain 'security' %}
 
 {% block title %}{{ 'security.reset_password.title'|trans }}{% endblock %}
+{% block login_title %}{{ 'security.reset_password.title'|trans }}{% endblock %}
 
-{% block main %}
-    <h1>{{ 'security.reset_password.title'|trans }}</h1>
+{% block login_form_email_outer %}{% endblock %}
+{% block login_form_remember_me_outer %}{% endblock %}
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">{{ 'security.reset_password.submit'|trans }}</button>
-    {{ form_end(resetForm) }}
-{% endblock %}

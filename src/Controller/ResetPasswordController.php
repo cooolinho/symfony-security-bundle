@@ -48,7 +48,7 @@ class ResetPasswordController extends AbstractController
         }
 
         return $this->render('@CooolinhoSecurity/reset_password/request.html.twig', [
-            'requestForm' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -124,7 +124,7 @@ class ResetPasswordController extends AbstractController
         }
 
         return $this->render('@CooolinhoSecurity/reset_password/reset.html.twig', [
-            'resetForm' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 

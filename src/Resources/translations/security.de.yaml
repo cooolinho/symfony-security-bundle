@@ -27,5 +27,4 @@ security.registration:
         terms: Ich aktzeptiere die Bedingungen
     password:
         not_blank: Bitte gebe ein Passwort ein
-#        min_length: 'Dein Passwort muss mindestens %limit% Zeichen haben'
         min_length: 'Dein Passwort muss mindestens {{ limit }} Zeichen haben'

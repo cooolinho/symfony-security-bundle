@@ -5,6 +5,7 @@ namespace Cooolinho\Bundle\SecurityBundle\Form;
 use Cooolinho\Bundle\SecurityBundle\CooolinhoSecurityBundle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -36,8 +37,9 @@ class ResetPasswordRequestFormType extends AbstractType
                             CooolinhoSecurityBundle::TRANSLATION_DOMAIN
                         ),
                     ]),
-                ]
+                ],
             ])
+            ->add('submit', SubmitType::class)
         ;
     }
 
