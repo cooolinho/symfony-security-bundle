@@ -22,6 +22,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_USER = 'ROLE_USER';
 
+    public const CHOICE_ROLE = [
+        'security.user.super_admin' => self::ROLE_SUPER_ADMIN,
+        'security.user.admin' => self::ROLE_ADMIN,
+        'security.user.label' => self::ROLE_USER,
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

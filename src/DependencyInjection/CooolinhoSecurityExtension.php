@@ -9,8 +9,10 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class CooolinhoSecurityExtension extends Extension
 {
+    public const ALIAS = 'cooolinho_security';
+
     /**
-     * @param array            $configs
+     * @param array $configs
      * @param ContainerBuilder $container
      *
      * @throws \Exception
@@ -28,17 +30,13 @@ class CooolinhoSecurityExtension extends Extension
 
         $loader->load('services.yaml');
 
-        $container->setParameter(
-            $this->getAlias() . '.' . Configuration::ROUTE_LOGIN,
-            $config[Configuration::ROUTE_LOGIN]
-        );
-        $container->setParameter(
-            $this->getAlias() . '.' . Configuration::ROUTE_AFTER_LOGIN,
-            $config[Configuration::ROUTE_AFTER_LOGIN]
-        );
-        $container->setParameter(
-            $this->getAlias() . '.' . Configuration::ROUTE_LOGOUT,
-            $config[Configuration::ROUTE_LOGOUT]
-        );
+        foreach (Configuration::$all as $configKey) {
+            $container->setParameter($this->getAlias() . '.' . $configKey, $config[$configKey]);
+        }
+    }
+
+    public function getAlias(): string
+    {
+        return self::ALIAS;
     }
 }
