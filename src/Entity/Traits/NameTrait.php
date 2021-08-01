@@ -9,12 +9,12 @@ trait NameTrait
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private string $firstname;
+    protected string $firstname;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private string $lastname;
+    protected string $lastname;
 
     public function getFirstname(): ?string
     {
