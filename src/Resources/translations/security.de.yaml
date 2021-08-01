@@ -32,3 +32,7 @@ security:
         password:
             not_blank: Bitte gebe ein Passwort ein
             min_length: 'Dein Passwort muss mindestens {{ limit }} Zeichen haben'
+    login:
+        password: Passwort
+        remember_me: 'An mich erinnern'
+        submit: Anmelden

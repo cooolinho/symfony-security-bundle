@@ -2,6 +2,7 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Form;
 
+use Cooolinho\Bundle\SecurityBundle\CooolinhoSecurityBundle;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -20,18 +21,26 @@ class LoginFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
+                'label' => 'security.user.email',
+                'translation_domain' => CooolinhoSecurityBundle::TRANSLATION_DOMAIN,
                 'data' => $options['lastUsername'],
             ])
-            ->add('password', PasswordType::class)
+            ->add('password', PasswordType::class, [
+                'label' => 'security.login.password',
+                'translation_domain' => CooolinhoSecurityBundle::TRANSLATION_DOMAIN,
+            ])
             ->add('_remember_me', CheckboxType::class, [
+                'label' => 'security.login.remember_me',
+                'translation_domain' => CooolinhoSecurityBundle::TRANSLATION_DOMAIN,
                 'required' => false,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Sign In',
+                'label' => 'security.login.submit',
+                'translation_domain' => CooolinhoSecurityBundle::TRANSLATION_DOMAIN,
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'lastUsername' => '',
@@ -40,7 +49,7 @@ class LoginFormType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::FORM_NAME;
     }

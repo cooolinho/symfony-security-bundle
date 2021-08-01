@@ -8,8 +8,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends Fixture
 {
-    private const DEMO_PASSWORD = 'secret';
-    private const DEMO_HOST_EMAIL = '@example.com';
+    public const DEMO_PASSWORD = 'secret';
+    public const DEMO_HOST_EMAIL = '@example.com';
     private const DEMO_USERS = [
         'super-admin' => User::ROLE_SUPER_ADMIN,
         'admin' => User::ROLE_ADMIN,

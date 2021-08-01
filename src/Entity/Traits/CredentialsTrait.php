@@ -11,6 +11,7 @@ trait CredentialsTrait
      * @ORM\Column(type="string")
      */
     protected string $password;
+    protected ?string $plainPassword;
 
     public function getPassword(): string
     {
@@ -24,6 +25,18 @@ trait CredentialsTrait
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
     public function getSalt(): ?string
     {
         return null;
@@ -31,7 +44,6 @@ trait CredentialsTrait
 
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 }
