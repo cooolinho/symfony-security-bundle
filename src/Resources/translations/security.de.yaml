@@ -27,8 +27,11 @@ security:
         title: Setze dein Passwort zurück
         info: Gebe deine E-Mail Adresse an und wir senden dir eine Link damit du dein Passwort zurücksetzen kannst
     registration:
+        title: Registrierung
         message:
-            terms: Ich aktzeptiere die Bedingungen
+            terms:
+                label: Ich aktzeptiere die Bedingungen
+                error: Du musst die Bedingungen aktzeptieren
         password:
             not_blank: Bitte gebe ein Passwort ein
             min_length: 'Dein Passwort muss mindestens {{ limit }} Zeichen haben'

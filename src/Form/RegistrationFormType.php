@@ -29,10 +29,15 @@ class RegistrationFormType extends AbstractType
         $builder->add('email');
         $builder->add('agreeTerms', CheckboxType::class, [
             'mapped' => false,
+            'label' => $this->translator->trans(
+                'security.registration.message.terms.label',
+                [],
+                CooolinhoSecurityBundle::TRANSLATION_DOMAIN
+            ),
             'constraints' => [
                 new IsTrue([
                     'message' => $this->translator->trans(
-                        'security.registration.message.terms',
+                        'security.registration.message.terms.error',
                         [],
                         CooolinhoSecurityBundle::TRANSLATION_DOMAIN
                     ),

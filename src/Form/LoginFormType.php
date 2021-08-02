@@ -30,7 +30,7 @@ class LoginFormType extends AbstractType
                 'translation_domain' => CooolinhoSecurityBundle::TRANSLATION_DOMAIN,
             ])
             ->add('_remember_me', CheckboxType::class, [
-                'label' => 'security.login.remember_me',
+                'label' => 'security.login.remember',
                 'translation_domain' => CooolinhoSecurityBundle::TRANSLATION_DOMAIN,
                 'required' => false,
             ])

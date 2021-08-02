@@ -1,8 +1,8 @@
 {% extends '@CooolinhoUi/pages/login.html.twig' %}
 {% trans_default_domain 'security' %}
 
-{% block title %}Register{% endblock %}
-{% block login_title %}Register{% endblock %}
+{% block title %}{{ 'security.registration.title'|trans }}{% endblock %}
+{% block login_title %}{{ 'security.registration.title'|trans }}{% endblock %}
 
 {% block login_body_top %}
     {% for flashError in app.flashes('verify_email_error') %}
@@ -11,11 +11,11 @@
 {% endblock %}
 
 {% block login_form_email %}
-    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'E-Mail'}}) }}
+    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'security.user.email'|trans}}) }}
 {% endblock %}
 
 {% block login_form_password %}
-    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
+    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'security.change_password.password.new'|trans}}) }}
 {% endblock %}
 
 {% block login_form_password_after %}
@@ -24,12 +24,12 @@
             <span class="input-group-text"><i class="fas fa-key"></i></span>
         </div>
 
-        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'Repeat Password'}}) }}
+        {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'security.change_password.password.repeat'|trans}}) }}
     </div>
 {% endblock %}
 
 {% block login_form_remember_me %}
-    {{ form_widget(form.agreeTerms) }}{{ 'security.registration.message.terms'|trans }}
+    {{ form_widget(form.agreeTerms) }}
 {% endblock %}
 
 {% block login_footer %}{% endblock %}

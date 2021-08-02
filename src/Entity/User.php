@@ -36,8 +36,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private ?int $id;
 
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         $this->addRole(self::ROLE_USER);
     }
 
