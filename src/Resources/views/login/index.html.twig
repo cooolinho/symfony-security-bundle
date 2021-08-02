@@ -1,0 +1,48 @@
+{% trans_default_domain 'security' %}
+
+{% extends '@CooolinhoUi/pages/login.html.twig' %}
+
+{% block title %}{{ 'security.login.title'|trans }}{% endblock %}
+
+{% block login_title %}{{ 'security.login.title'|trans }}{% endblock %}
+
+{% block form_start %}{{ form_start(form) }}{% endblock %}
+
+{% block login_form_email %}
+    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'E-Mail', 'name': 'email'}}) }}
+{% endblock %}
+
+{% block login_form_password %}
+    {{ form_widget(form.password, {
+        'attr': {'class': 'form-control', 'placeholder': 'Password', 'name': 'password'},
+    }) }}
+{% endblock %}
+
+{% block login_form_remember_me %}
+    {{ form_widget(form._remember_me, {
+        'label': 'security.login.remember_me'|trans
+    }) }}
+{% endblock %}
+
+{% block login_form_submit %}
+    {{ form_widget(form.submit, {
+        'attr': {'class': 'btn float-right login_btn'},
+        'label': 'security.login.submit'|trans
+    }) }}
+{% endblock %}
+
+{% block login_footer_inner %}
+    <div class="d-flex justify-content-center links">
+        {{ 'security.login.signup'|trans({'%url%': path('app_register')})|raw }}
+    </div>
+    <div class="d-flex justify-content-center">
+        {{ 'security.login.forgot_password'|trans({'%url%': path('app_forgot_password_request')})|raw }}
+    </div>
+    <div class="d-flex justify-content-center">
+        <p class="mt-5 mb-3 text-muted">© {{ 'now'|date('Y') }}</p>
+    </div>
+{% endblock %}
+
+{% block login_form_end %}
+    {{ form_end(form) }}
+{% endblock %}
