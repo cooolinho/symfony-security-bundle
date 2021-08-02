@@ -4,6 +4,14 @@
 {% block title %}{{ 'security.reset_password.title'|trans }}{% endblock %}
 {% block login_title %}{{ 'security.reset_password.title'|trans }}{% endblock %}
 
+{% block form_start %}{{ form_start(form) }}{% endblock %}
 {% block login_form_email_outer %}{% endblock %}
 {% block login_form_remember_me_outer %}{% endblock %}
 
+{% block login_form_submit %}
+    {{ form_widget(form.submit, {
+        'attr': {'class': 'btn float-right login_btn'},
+        'label': 'security.reset_password.submit'|trans
+    }) }}
+{% endblock %}
+{% block login_form_end %}{{ form_end(form) }}{% endblock %}
