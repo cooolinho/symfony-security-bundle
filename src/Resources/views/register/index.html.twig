@@ -1,4 +1,4 @@
-{% extends '@CooolinhoUi/pages/login.html.twig' %}
+{% extends '@CooolinhoSecurity/security/login.html.twig' %}
 {% trans_default_domain 'security' %}
 
 {% block title %}{{ 'security.registration.title'|trans }}{% endblock %}
@@ -9,6 +9,8 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 {% endblock %}
+
+{% block form_start %}{{ form_start(form) }}{% endblock %}
 
 {% block login_form_email %}
     {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'security.user.email'|trans}}) }}
@@ -31,5 +33,7 @@
 {% block login_form_remember_me %}
     {{ form_widget(form.agreeTerms) }}
 {% endblock %}
+
+{% block login_form_end %}{{ form_end(form) }}{% endblock %}
 
 {% block login_footer %}{% endblock %}
