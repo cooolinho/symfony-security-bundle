@@ -8,26 +8,24 @@
 {% block form_start %}{{ form_start(form) }}{% endblock %}
 
 {% block login_form_email %}
-    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'E-Mail', 'name': 'email'}}) }}
+    {{ form_widget(form.email, {
+        'attr': {
+            'class': 'form-control',
+            'placeholder': 'security.user.email'|trans,
+            'name': 'email'
+        }}) }}
 {% endblock %}
 
 {% block login_form_password %}
-    {{ form_widget(form.password, {
-        'attr': {'class': 'form-control', 'placeholder': 'Password', 'name': 'password'},
-    }) }}
+    {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Password', 'name': 'password'}}) }}
 {% endblock %}
 
 {% block login_form_remember_me %}
-    {{ form_widget(form._remember_me, {
-        'label': 'security.login.remember'|trans
-    }) }}
+    {{ form_widget(form._remember_me) }}
 {% endblock %}
 
 {% block login_form_submit %}
-    {{ form_widget(form.submit, {
-        'attr': {'class': 'btn float-right login_btn'},
-        'label': 'security.login.submit'|trans
-    }) }}
+    {{ form_widget(form.submit, {'attr': {'class': 'btn float-right login_btn'}}) }}
 {% endblock %}
 
 {% block login_footer_inner %}

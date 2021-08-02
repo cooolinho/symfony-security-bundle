@@ -124,7 +124,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute($this->parameterBag->get('cooolinho_security.route_login'));
         }
 
         return $this->render('@CooolinhoSecurity/reset_password/reset.html.twig', [
