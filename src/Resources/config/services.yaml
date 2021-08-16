@@ -9,9 +9,16 @@ services:
 
     Cooolinho\Bundle\SecurityBundle\Controller\:
         resource: '../../../src/Controller'
-        tags: ['controller.service_arguments']
+        tags: [ 'controller.service_arguments' ]
 
     Cooolinho\Bundle\SecurityBundle\EventListener\UserListener:
         class: Cooolinho\Bundle\SecurityBundle\EventListener\UserListener
         tags:
-            - { name: doctrine.orm.entity_listener, event: prePersist, entity: 'Cooolinho\Bundle\SecurityBundle\Entity\User' }
+            - { name: doctrine.orm.entity_listener, event: prePersist, entity: '%cooolinho_security.user_class%' }
+
+    Cooolinho\Bundle\SecurityBundle\Repository\ResetPasswordRequestRepository:
+        class: Cooolinho\Bundle\SecurityBundle\Repository\ResetPasswordRequestRepository
+        arguments:
+            - '@registry'
+        calls:
+            -   setResetPasswordRequestClass: [ '%cooolinho_security.user%' ]

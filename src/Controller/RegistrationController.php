@@ -2,7 +2,7 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
-use Cooolinho\Bundle\SecurityBundle\Entity\User;
+use Cooolinho\Bundle\SecurityBundle\Exception\UserClassNotFoundException;
 use Cooolinho\Bundle\SecurityBundle\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -14,13 +14,20 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
+     * @throws UserClassNotFoundException
      */
     public function register(
         Request $request,
         ParameterBagInterface $parameterBag
     ): Response
     {
-        $user = new User();
+        if (!class_exists($parameterBag->get('cooolinho_security.user_class'))) {
+            throw new UserClassNotFoundException();
+        }
+
+        $userClass = $parameterBag->get('cooolinho_security.user_class');
+
+        $user = new $userClass();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
