@@ -4,13 +4,20 @@ namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
 use Cooolinho\Bundle\SecurityBundle\Form\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
+    private ParameterBagInterface $parameterBag;
+
+    public function __construct(ParameterBagInterface $parameterBag)
+    {
+        $this->parameterBag = $parameterBag;
+    }
+
     /**
      * @Route("/login", name="app_login")
      */
@@ -28,6 +35,7 @@ class SecurityController extends AbstractController
             [
                 'form' => $form->createView(),
                 'error' => $error,
+                'registration_enabled' => $this->parameterBag->get('cooolinho_security.registration_enabled'),
             ]
         );
     }

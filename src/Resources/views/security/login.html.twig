@@ -29,9 +29,12 @@
 {% endblock %}
 
 {% block login_footer_inner %}
-    <div class="d-flex justify-content-center links">
-        {{ 'security.login.signup'|trans({'%url%': path('app_register')})|raw }}
-    </div>
+    {% if registration_enabled %}
+        <div class="d-flex justify-content-center links">
+            {{ 'security.login.signup'|trans({'%url%': path('app_register')})|raw }}
+        </div>
+    {% endif %}
+
     <div class="d-flex justify-content-center">
         {{ 'security.login.forgot_password'|trans({'%url%': path('app_forgot_password_request')})|raw }}
     </div>

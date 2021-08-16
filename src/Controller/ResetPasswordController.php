@@ -4,7 +4,6 @@ namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
 use Cooolinho\Bundle\SecurityBundle\DependencyInjection\Configuration;
 use Cooolinho\Bundle\SecurityBundle\DependencyInjection\CooolinhoSecurityExtension;
-use Cooolinho\Bundle\SecurityBundle\Entity\User;
 use Cooolinho\Bundle\SecurityBundle\Form\ChangePasswordFormType;
 use Cooolinho\Bundle\SecurityBundle\Form\ResetPasswordRequestFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -134,7 +133,7 @@ class ResetPasswordController extends AbstractController
 
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy([
+        $user = $this->getDoctrine()->getRepository($this->parameterBag->get('cooolinho_security.user_class'))->findOneBy([
             'email' => $emailFormData,
         ]);
 

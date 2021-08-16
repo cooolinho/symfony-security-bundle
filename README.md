@@ -27,7 +27,7 @@ composer install cooolinho/symfony-security-bundle
     security:
         providers:
             ...
-            my_custom_provider:
+            secured_area_provider:
                 entity:
                     class: Cooolinho\Bundle\SecurityBundle\Entity\User
                     property: email
@@ -37,14 +37,19 @@ composer install cooolinho/symfony-security-bundle
     security:
         firewalls:
             ...
-            secured_admin_area:
-                provider: my_custom_provider
+            secured_area:
+                lazy: true
+                pattern: ^/
+                provider: secured_area_provider
                 user_checker: Cooolinho\Bundle\SecurityBundle\Security\UserChecker
                 custom_authenticator:
                     - Cooolinho\Bundle\SecurityBundle\Security\SecurityAuthenticator
                 logout:
                     path: app_logout
                     target: app_login
+                form_login:
+                    login_path: app_login
+                    check_path: app_login
 
 #### add role hierarchy
 
@@ -55,14 +60,16 @@ composer install cooolinho/symfony-security-bundle
 #### add access control
 
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/logout, roles: PUBLIC_ACCESS }
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/login,          roles: PUBLIC_ACCESS }
+        - { path: ^/logout,         roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/register,       roles: PUBLIC_ACCESS }
 
 ### add cooolinho_security.yaml to config/packages
 
     cooolinho_security:
         route_after_login: # REQUIRED
+        user_class: #REQUIRED
 
 ### update reset_password.yaml in config/packages
 
