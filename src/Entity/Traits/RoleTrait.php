@@ -21,7 +21,7 @@ trait RoleTrait
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->roles = array_values(array_unique($roles));
 
         return $this;
     }
