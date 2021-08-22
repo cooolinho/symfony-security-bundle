@@ -14,6 +14,11 @@ class Configuration implements ConfigurationInterface
     public const MAILER_NAME = 'mailer_name';
     public const USER_CLASS = 'user_class';
     public const REGISTRATION_ENABLED = 'registration_enabled';
+    public const LOGIN_PROVIDER_PROPERTY = 'login_provider_property';
+
+    public const LOGIN_PROVIDER_PROPERTY_EMAIL = 'email';
+    public const LOGIN_PROVIDER_PROPERTY_USERNAME = 'username';
+    public const DEFAULT_LOGIN_PROVIDER_PROPERTY = self::LOGIN_PROVIDER_PROPERTY_EMAIL;
 
     public static $all = [
         self::ROUTE_LOGIN,
@@ -23,11 +28,12 @@ class Configuration implements ConfigurationInterface
         self::MAILER_NAME,
         self::USER_CLASS,
         self::REGISTRATION_ENABLED,
+        self::LOGIN_PROVIDER_PROPERTY,
     ];
 
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('cooolinho_security');
+        $treeBuilder = new TreeBuilder(CooolinhoSecurityExtension::ALIAS);
 
         $treeBuilder->getRootNode()
             ->children()
@@ -41,6 +47,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode(self::ROUTE_LOGOUT)->defaultValue('app_logout')->end()
             ->scalarNode(self::MAILER_FROM)->defaultValue('test@localhost')->end()
             ->scalarNode(self::MAILER_NAME)->defaultValue('Localhost Mailbot')->end()
+            ->scalarNode(self::LOGIN_PROVIDER_PROPERTY)->defaultValue(self::DEFAULT_LOGIN_PROVIDER_PROPERTY)->end()
             ->end();
 
         return $treeBuilder;

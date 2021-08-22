@@ -8,12 +8,22 @@
 {% block form_start %}{{ form_start(form) }}{% endblock %}
 
 {% block login_form_email %}
-    {{ form_widget(form.email, {
-        'attr': {
-            'class': 'form-control',
-            'placeholder': 'security.user.email'|trans,
-            'name': 'email'
-        }}) }}
+    {% if form.username %}
+        {{ form_widget(form.username, {
+            'attr': {
+                'class': 'form-control',
+                'placeholder': 'security.user.username'|trans,
+                'name': 'username'
+            }}) }}
+    {% else %}
+        {{ form_widget(form.email, {
+            'attr': {
+                'class': 'form-control',
+                'placeholder': 'security.user.email'|trans,
+                'name': 'email'
+            }}) }}
+    {% endif %}
+
 {% endblock %}
 
 {% block login_form_password %}

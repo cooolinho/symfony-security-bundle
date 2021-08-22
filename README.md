@@ -30,7 +30,7 @@ composer install cooolinho/symfony-security-bundle
             my_custom_provider:
                 entity:
                     class: Cooolinho\Bundle\SecurityBundle\Entity\User
-                    property: email
+                    property: email | username
 
 #### update firewall
 
@@ -65,6 +65,11 @@ composer install cooolinho/symfony-security-bundle
         route_after_login: # REQUIRED
         user_class: # REQUIRED
         registration_enabled: false # optional
+        route_login: app_login # optional
+        route_logout: app_logout # optional
+        mailer_from: test@localhost # optional
+        mailer_name: Localhost Mailbot # optional
+        login_provider_property: email # optional
 
 ### ResetPassword Setup
 
