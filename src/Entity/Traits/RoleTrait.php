@@ -2,7 +2,6 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Entity\Traits;
 
-use Cooolinho\Bundle\SecurityBundle\Entity\Constant\Role;
 use Doctrine\ORM\Mapping as ORM;
 
 trait RoleTrait
@@ -17,10 +16,7 @@ trait RoleTrait
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        $roles[] = Role::USER;
-
-        return array_unique($roles);
+        return array_unique($this->roles);
     }
 
     public function setRoles(array $roles): self
