@@ -27,7 +27,7 @@ composer install cooolinho/symfony-security-bundle
     security:
         providers:
             ...
-            secured_area_provider:
+            my_custom_provider:
                 entity:
                     class: Cooolinho\Bundle\SecurityBundle\Entity\User
                     property: email
@@ -37,19 +37,14 @@ composer install cooolinho/symfony-security-bundle
     security:
         firewalls:
             ...
-            secured_area:
-                lazy: true
-                pattern: ^/
-                provider: secured_area_provider
+            secured_admin_area:
+                provider: my_custom_provider
                 user_checker: Cooolinho\Bundle\SecurityBundle\Security\UserChecker
                 custom_authenticator:
                     - Cooolinho\Bundle\SecurityBundle\Security\SecurityAuthenticator
                 logout:
                     path: app_logout
                     target: app_login
-                form_login:
-                    login_path: app_login
-                    check_path: app_login
 
 #### add role hierarchy
 
@@ -60,21 +55,112 @@ composer install cooolinho/symfony-security-bundle
 #### add access control
 
     access_control:
-        - { path: ^/login,          roles: PUBLIC_ACCESS }
-        - { path: ^/logout,         roles: PUBLIC_ACCESS }
-        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
-        - { path: ^/register,       roles: PUBLIC_ACCESS }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 ### add cooolinho_security.yaml to config/packages
 
     cooolinho_security:
         route_after_login: # REQUIRED
-        user_class: #REQUIRED
+        user_class: # REQUIRED
+        registration_enabled: false # optional
 
-### update reset_password.yaml in config/packages
+### ResetPassword Setup
+
+First you have to create two classes: App\Entity\ResetPasswordRequest and App\Repository\ResetPasswordRequestRepository
+
+#### App\Entity\ResetPasswordRequest
+
+```php
+<?php
+
+namespace App\Entity;
+
+use App\Repository\ResetPasswordRequestRepository;
+use Doctrine\ORM\Mapping as ORM;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+
+/**
+ * @ORM\Entity(repositoryClass=ResetPasswordRequestRepository::class)
+ * @ORM\Table(name="users_reset_password_requests")
+ */
+class ResetPasswordRequest implements ResetPasswordRequestInterface
+{
+    use ResetPasswordRequestTrait;
+
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private ?int $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private object $user;
+
+    public function __construct(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken)
+    {
+        $this->user = $user;
+        $this->initialize($expiresAt, $selector, $hashedToken);
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUser(): object
+    {
+        return $this->user;
+    }
+}
+```
+
+#### App\Repository\ResetPasswordRequestRepository
+
+```php
+<?php
+
+namespace App\Repository;
+
+use App\Entity\ResetPasswordRequest;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordRequestRepositoryTrait;
+use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
+
+/**
+ * @method ResetPasswordRequest|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ResetPasswordRequest|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ResetPasswordRequest[]    findAll()
+ * @method ResetPasswordRequest[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class ResetPasswordRequestRepository extends ServiceEntityRepository implements ResetPasswordRequestRepositoryInterface
+{
+    use ResetPasswordRequestRepositoryTrait;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ResetPasswordRequest::class);
+    }
+
+    public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
+    {
+        return new ResetPasswordRequest($user, $expiresAt, $selector, $hashedToken);
+    }
+}
+```
+
+#### update reset_password.yaml in config/packages
 
     symfonycasts_reset_password:
-        request_password_repository: Cooolinho\Bundle\SecurityBundle\Repository\ResetPasswordRequestRepository
+        request_password_repository: App\Repository\ResetPasswordRequestRepository
 
 ### update config/routes/annotations.yaml
 

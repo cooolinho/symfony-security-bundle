@@ -43,4 +43,13 @@ trait RoleTrait
     {
         return in_array($role, $this->getRoles(), true);
     }
+
+    public function removeRole(string $role): self
+    {
+        if (in_array($role, $this->roles, true)) {
+            unset($this->roles[array_search($role, $this->roles, true)]);
+        }
+
+        return $this;
+    }
 }
