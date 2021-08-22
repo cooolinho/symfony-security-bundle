@@ -2,6 +2,8 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Security;
 
+use Cooolinho\Bundle\SecurityBundle\DependencyInjection\Configuration;
+use Cooolinho\Bundle\SecurityBundle\DependencyInjection\CooolinhoSecurityExtension;
 use Cooolinho\Bundle\SecurityBundle\Form\LoginFormType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,6 +27,7 @@ class SecurityAuthenticator extends AbstractAuthenticator
 
     private ParameterBagInterface $parameterBag;
     private UrlGeneratorInterface $urlGenerator;
+    private string $loginProviderProperty;
 
     public function __construct(
         ParameterBagInterface $parameterBag,
@@ -33,16 +36,16 @@ class SecurityAuthenticator extends AbstractAuthenticator
     {
         $this->parameterBag = $parameterBag;
         $this->urlGenerator = $urlGenerator;
-    }
 
-    protected function getLoginRoute(): string
-    {
-        return $this->parameterBag->get('cooolinho_security.route_login');
-    }
+        $this->loginProviderProperty = $this->parameterBag->get(
+            CooolinhoSecurityExtension::ALIAS . '.' . Configuration::LOGIN_PROVIDER_PROPERTY
+        );
 
-    protected function getAfterLoginRoute(): string
-    {
-        return $this->parameterBag->get('cooolinho_security.route_after_login');
+        if (!in_array($this->loginProviderProperty, [
+            Configuration::DEFAULT_LOGIN_PROVIDER_PROPERTY, Configuration::LOGIN_PROVIDER_PROPERTY_USERNAME,
+        ], true)) {
+            $this->loginProviderProperty = Configuration::DEFAULT_LOGIN_PROVIDER_PROPERTY;
+        }
     }
 
     public function supports(Request $request): bool
@@ -51,18 +54,23 @@ class SecurityAuthenticator extends AbstractAuthenticator
             && $request->isMethod('POST');
     }
 
+    protected function getLoginRoute(): string
+    {
+        return $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::ROUTE_LOGIN);
+    }
+
     public function authenticate(Request $request): PassportInterface
     {
         $form = $request->request->get(LoginFormType::FORM_NAME);
 
-        $email = $form['email'] ?? '';
+        $loginProperty = $form[$this->loginProviderProperty] ?? '';
         $password = $form['password'] ?? '';
         $token = $form[LoginFormType::TOKEN_FIELD_NAME] ?? '';
 
-        $request->getSession()->set(Security::LAST_USERNAME, $email);
+        $request->getSession()->set(Security::LAST_USERNAME, $loginProperty);
 
         return new Passport(
-            new UserBadge($email),
+            new UserBadge($loginProperty),
             new PasswordCredentials($password),
             [
                 new CsrfTokenBadge(LoginFormType::TOKEN_ID, $token),
@@ -77,6 +85,11 @@ class SecurityAuthenticator extends AbstractAuthenticator
         }
 
         return new RedirectResponse($this->urlGenerator->generate($this->getAfterLoginRoute()));
+    }
+
+    protected function getAfterLoginRoute(): string
+    {
+        return $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::ROUTE_AFTER_LOGIN);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response

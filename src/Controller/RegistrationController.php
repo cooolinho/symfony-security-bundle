@@ -2,6 +2,8 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
+use Cooolinho\Bundle\SecurityBundle\DependencyInjection\Configuration;
+use Cooolinho\Bundle\SecurityBundle\DependencyInjection\CooolinhoSecurityExtension;
 use Cooolinho\Bundle\SecurityBundle\Exception\UserClassNotFoundException;
 use Cooolinho\Bundle\SecurityBundle\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,15 +19,15 @@ class RegistrationController extends AbstractController
      * @throws UserClassNotFoundException
      */
     public function register(
-        Request $request,
+        Request               $request,
         ParameterBagInterface $parameterBag
     ): Response
     {
-        if (!class_exists($parameterBag->get('cooolinho_security.user_class'))) {
+        if (!class_exists($parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::USER_CLASS))) {
             throw new UserClassNotFoundException();
         }
 
-        $userClass = $parameterBag->get('cooolinho_security.user_class');
+        $userClass = $parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::USER_CLASS);
 
         $user = new $userClass();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -38,7 +40,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute($parameterBag->get('cooolinho_security.route_login'));
+            return $this->redirectToRoute($parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::ROUTE_LOGIN));
         }
 
         return $this->render('@CooolinhoSecurity/register/index.html.twig', [

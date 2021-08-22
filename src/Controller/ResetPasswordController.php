@@ -56,6 +56,51 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
+    private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
+    {
+        $user = $this->getDoctrine()->getRepository(
+            $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::USER_CLASS)
+        )->findOneBy([
+            'email' => $emailFormData,
+        ]);
+
+        // Do not reveal whether a user account was found or not.
+        if (!$user) {
+            return $this->redirectToRoute('app_forgot_password_check_mail');
+        }
+
+        try {
+            $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+        } catch (ResetPasswordExceptionInterface $e) {
+            $this->addFlash('reset_password_error', sprintf(
+                'There was a problem handling your password reset request - %s',
+                $e->getReason()
+            ));
+
+            return $this->redirectToRoute('app_forgot_password_check_mail');
+        }
+
+        $email = (new TemplatedEmail())
+            ->from(new Address(
+                    $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::MAILER_FROM),
+                    $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::MAILER_NAME))
+            )
+            ->to($user->getEmail())
+            ->subject('Your password reset request')
+            ->htmlTemplate('@CooolinhoSecurity/reset_password/email.html.twig')
+            ->context([
+                'resetToken' => $resetToken,
+                'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+            ]);
+
+        $mailer->send($email);
+
+        // Marks that you are allowed to see the app_forgot_password_check_mail page.
+        $this->setTokenObjectInSession($resetToken);
+
+        return $this->redirectToRoute('app_forgot_password_check_mail');
+    }
+
     /**
      * @Route("/check-email", name="app_forgot_password_check_mail")
      */
@@ -74,9 +119,9 @@ class ResetPasswordController extends AbstractController
      * @Route("/reset", name="app_forgot_password_reset")
      */
     public function reset(
-        Request $request,
+        Request                      $request,
         UserPasswordEncoderInterface $passwordEncoder,
-        string $token = null
+        string                       $token = null
     ): Response
     {
         if ($token = $request->get('token')) {
@@ -123,54 +168,13 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute($this->parameterBag->get('cooolinho_security.route_login'));
+            return $this->redirectToRoute($this->parameterBag->get(
+                CooolinhoSecurityExtension::ALIAS . '.' . Configuration::ROUTE_LOGIN
+            ));
         }
 
         return $this->render('@CooolinhoSecurity/reset_password/reset.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
-    {
-        $user = $this->getDoctrine()->getRepository($this->parameterBag->get('cooolinho_security.user_class'))->findOneBy([
-            'email' => $emailFormData,
-        ]);
-
-        // Do not reveal whether a user account was found or not.
-        if (!$user) {
-            return $this->redirectToRoute('app_forgot_password_check_mail');
-        }
-
-        try {
-            $resetToken = $this->resetPasswordHelper->generateResetToken($user);
-        } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('reset_password_error', sprintf(
-                'There was a problem handling your password reset request - %s',
-                $e->getReason()
-            ));
-
-            return $this->redirectToRoute('app_forgot_password_check_mail');
-        }
-
-        $email = (new TemplatedEmail())
-            ->from(new Address(
-                    $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::MAILER_FROM),
-                    $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::MAILER_NAME))
-            )
-            ->to($user->getEmail())
-            ->subject('Your password reset request')
-            ->htmlTemplate('@CooolinhoSecurity/reset_password/email.html.twig')
-            ->context([
-                'resetToken' => $resetToken,
-                'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
-            ]);
-
-        $mailer->send($email);
-
-        // Marks that you are allowed to see the app_forgot_password_check_mail page.
-        $this->setTokenObjectInSession($resetToken);
-
-        return $this->redirectToRoute('app_forgot_password_check_mail');
     }
 }

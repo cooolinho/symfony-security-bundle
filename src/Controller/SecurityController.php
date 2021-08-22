@@ -2,6 +2,8 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
+use Cooolinho\Bundle\SecurityBundle\DependencyInjection\Configuration;
+use Cooolinho\Bundle\SecurityBundle\DependencyInjection\CooolinhoSecurityExtension;
 use Cooolinho\Bundle\SecurityBundle\Form\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -28,6 +30,7 @@ class SecurityController extends AbstractController
 
         $form = $this->createForm(LoginFormType::class, null, [
             'lastUsername' => $lastUsername,
+            'login_property' => $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::LOGIN_PROVIDER_PROPERTY),
         ]);
 
         return $this->render(
@@ -35,7 +38,7 @@ class SecurityController extends AbstractController
             [
                 'form' => $form->createView(),
                 'error' => $error,
-                'registration_enabled' => $this->parameterBag->get('cooolinho_security.registration_enabled'),
+                'registration_enabled' => $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::REGISTRATION_ENABLED),
             ]
         );
     }
