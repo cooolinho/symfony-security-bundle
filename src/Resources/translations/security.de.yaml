@@ -1,6 +1,7 @@
 security:
     user:
         email: E-Mail
+        username: Benutzername
         label: Benutzer
         admin: Administrator
         super_admin: 'Super-Administrator'
