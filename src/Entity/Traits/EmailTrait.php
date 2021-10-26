@@ -22,9 +22,4 @@ trait EmailTrait
 
         return $this;
     }
-
-    public function getUsername(): string
-    {
-        return (string)$this->email;
-    }
 }
