@@ -27,6 +27,11 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
 
     abstract public function getId(): ?int;
 
+    public function getUsername(): string
+    {
+        return $this->email;
+    }
+
     public function getUserIdentifier(): string
     {
         return $this->email;

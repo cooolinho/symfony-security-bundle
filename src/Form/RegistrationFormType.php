@@ -17,7 +17,7 @@ class RegistrationFormType extends AbstractType
 {
     use RepeatedPasswordFormTypeTrait;
 
-    private TranslatorInterface $translator;
+    protected TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
     {
