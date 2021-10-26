@@ -9,7 +9,7 @@ trait UsernameTrait
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    protected string $username;
+    protected string $username = '';
 
     /**
      * @return string
