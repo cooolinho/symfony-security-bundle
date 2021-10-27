@@ -64,4 +64,9 @@ class ConfigurationService
     {
         return trim($this->getConfigurationValue(Configuration::LOGIN_PROVIDER_PROPERTY));
     }
+
+    public function getRouteAfterRegistration(): string
+    {
+        return trim($this->getConfigurationValue(Configuration::ROUTE_AFTER_REGISTRATION));
+    }
 }
