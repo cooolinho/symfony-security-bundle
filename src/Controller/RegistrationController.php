@@ -43,10 +43,11 @@ class RegistrationController extends AbstractController
         $form = $this->createForm($registrationForm, $user);
         $form->handleRequest($request);
 
-        $event = new RegistrationEvent($request, $user, $form);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPlainPassword($form->get('plainPassword')->getData());
+            $response = $this->redirectToRoute($configuration->getRouteAfterRegistration());
+            $event = new RegistrationEvent($request, $user, $form, $response);
 
+            $user->setPlainPassword($form->get('plainPassword')->getData());
             $entityManager = $this->getDoctrine()->getManager();
 
             $this->eventDispatcher->dispatch($event, RegistrationEvent::PRE_PERSIST);
@@ -54,7 +55,9 @@ class RegistrationController extends AbstractController
             $this->eventDispatcher->dispatch($event, RegistrationEvent::POST_PERSIST);
             $entityManager->flush();
 
-            return $this->redirectToRoute($configuration->getRouteLogin());
+            $this->eventDispatcher->dispatch($event, RegistrationEvent::REGISTRATION_SUCCESS);
+
+            return $event->getResponse();
         }
 
         return $this->render('@CooolinhoSecurity/register/index.html.twig', [

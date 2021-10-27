@@ -21,11 +21,8 @@
 {% endblock %}
 
 {% block login_form_password_after %}
-    <div class="input-group form-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-key"></i></span>
-        </div>
-
+    <div class="input-group mb-3">
+        <span class="input-group-text"><i class="fas fa-key"></i></span>
         {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder': 'security.change_password.password.repeat'|trans}}) }}
     </div>
 {% endblock %}

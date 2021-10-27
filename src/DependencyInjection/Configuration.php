@@ -14,6 +14,7 @@ class Configuration implements ConfigurationInterface
     public const REGISTRATION_ENABLED = 'registration_enabled';
     public const REGISTRATION_FORM = 'registration_form';
     public const ROUTE_AFTER_LOGIN = 'route_after_login';
+    public const ROUTE_AFTER_REGISTRATION = 'route_after_registration';
     public const ROUTE_LOGIN = 'route_login';
     public const ROUTE_LOGOUT = 'route_logout';
     public const USER_CLASS = 'user_class';
@@ -29,6 +30,7 @@ class Configuration implements ConfigurationInterface
         self::REGISTRATION_ENABLED,
         self::REGISTRATION_FORM,
         self::ROUTE_AFTER_LOGIN,
+        self::ROUTE_AFTER_REGISTRATION,
         self::ROUTE_LOGIN,
         self::ROUTE_LOGOUT,
         self::USER_CLASS,
@@ -50,6 +52,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode(self::MAILER_NAME)->defaultValue('Localhost Mailbot')->end()
             ->scalarNode(self::REGISTRATION_ENABLED)->defaultValue(true)->end()
             ->scalarNode(self::REGISTRATION_FORM)->defaultValue(RegistrationController::class)->end()
+            ->scalarNode(self::ROUTE_AFTER_REGISTRATION)->defaultValue('app_login')->end()
             ->scalarNode(self::ROUTE_LOGIN)->defaultValue('app_login')->end()
             ->scalarNode(self::ROUTE_LOGOUT)->defaultValue('app_logout')->end()
             ->end();
