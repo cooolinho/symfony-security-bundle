@@ -2,13 +2,11 @@
 
 namespace Cooolinho\Bundle\SecurityBundle\Controller;
 
-use Cooolinho\Bundle\SecurityBundle\DependencyInjection\Configuration;
-use Cooolinho\Bundle\SecurityBundle\DependencyInjection\CooolinhoSecurityExtension;
 use Cooolinho\Bundle\SecurityBundle\Form\ChangePasswordFormType;
 use Cooolinho\Bundle\SecurityBundle\Form\ResetPasswordRequestFormType;
+use Cooolinho\Bundle\SecurityBundle\Service\ConfigurationService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,12 +26,15 @@ class ResetPasswordController extends AbstractController
     use ResetPasswordControllerTrait;
 
     private ResetPasswordHelperInterface $resetPasswordHelper;
-    private ParameterBagInterface $parameterBag;
+    private ConfigurationService $parameterBag;
 
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper, ParameterBagInterface $parameterBag)
+    public function __construct(
+        ResetPasswordHelperInterface $resetPasswordHelper,
+        ConfigurationService         $configuration
+    )
     {
         $this->resetPasswordHelper = $resetPasswordHelper;
-        $this->parameterBag = $parameterBag;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -58,9 +59,7 @@ class ResetPasswordController extends AbstractController
 
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
     {
-        $user = $this->getDoctrine()->getRepository(
-            $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::USER_CLASS)
-        )->findOneBy([
+        $user = $this->getDoctrine()->getRepository($this->configuration->getUserClass())->findOneBy([
             'email' => $emailFormData,
         ]);
 
@@ -81,10 +80,7 @@ class ResetPasswordController extends AbstractController
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address(
-                    $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::MAILER_FROM),
-                    $this->parameterBag->get(CooolinhoSecurityExtension::ALIAS . '.' . Configuration::MAILER_NAME))
-            )
+            ->from(new Address($this->configuration->getMailerFrom(), $this->configuration->getMailerName()))
             ->to($user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('@CooolinhoSecurity/reset_password/email.html.twig')
@@ -168,9 +164,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute($this->parameterBag->get(
-                CooolinhoSecurityExtension::ALIAS . '.' . Configuration::ROUTE_LOGIN
-            ));
+            return $this->redirectToRoute($this->parameterBag->get($this->configuration->getRouteLogin()));
         }
 
         return $this->render('@CooolinhoSecurity/reset_password/reset.html.twig', [
