@@ -9,7 +9,7 @@ trait EmailTrait
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    protected string $email;
+    protected string $email = '';
 
     public function getEmail(): ?string
     {

@@ -11,7 +11,7 @@ trait CredentialsTrait
      * @ORM\Column(type="string")
      */
     protected string $password;
-    protected ?string $plainPassword;
+    protected ?string $plainPassword = null;
 
     public function getPassword(): string
     {
